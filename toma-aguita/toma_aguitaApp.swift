@@ -36,7 +36,7 @@ struct toma_aguitaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
                 .modelContainer(modelContainer)
         }
     }

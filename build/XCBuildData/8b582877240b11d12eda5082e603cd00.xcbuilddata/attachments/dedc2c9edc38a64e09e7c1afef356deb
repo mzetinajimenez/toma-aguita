@@ -1,0 +1,88 @@
+{
+  "" : {
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma-aguita-master.dia",
+    "emit-module-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma-aguita-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma-aguita-master-emit-module.dia",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma-aguita-master.swiftdeps"
+  },
+  "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/mzj/Projects/toma-aguita/toma-aguita/ContentView.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/mzj/Projects/toma-aguita/toma-aguita/Models/WaterIntakeManager.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeManager~partial.swiftmodule"
+  },
+  "/Users/mzj/Projects/toma-aguita/toma-aguita/Models/WaterIntakeRecord.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/WaterIntakeRecord~partial.swiftmodule"
+  },
+  "/Users/mzj/Projects/toma-aguita/toma-aguita/Views/HistoryView.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/HistoryView~partial.swiftmodule"
+  },
+  "/Users/mzj/Projects/toma-aguita/toma-aguita/Views/MainTabView.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/MainTabView~partial.swiftmodule"
+  },
+  "/Users/mzj/Projects/toma-aguita/toma-aguita/Views/SocialView.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/SocialView~partial.swiftmodule"
+  },
+  "/Users/mzj/Projects/toma-aguita/toma-aguita/toma_aguitaApp.swift" : {
+    "const-values" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp.swiftconstvalues",
+    "dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp.d",
+    "diagnostics" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp.dia",
+    "index-unit-output-path" : "/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp.o",
+    "llvm-bc" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp.bc",
+    "object" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp.o",
+    "swift-dependencies" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp.swiftdeps",
+    "swiftmodule" : "/Users/mzj/Projects/toma-aguita/build/toma-aguita.build/Debug-iphoneos/toma-aguita.build/Objects-normal/arm64/toma_aguitaApp~partial.swiftmodule"
+  }
+}

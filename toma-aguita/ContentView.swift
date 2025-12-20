@@ -29,23 +29,6 @@ struct ContentView: View {
             VStack(spacing: 30) {
                 Spacer()
 
-                // Title
-                VStack(spacing: 8) {
-                    Text("💧 Toma Aguita")
-                        .font(.system(size: 36, weight: .bold, design: .rounded))
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.cyan, .blue],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                    Text("Stay hydrated!")
-                        .font(.system(size: 18, weight: .medium, design: .rounded))
-                        .foregroundColor(.secondary)
-                }
-                .padding(.top, 20)
-
                 // Unit toggle
                 Picker("Unit", selection: $isOzMode) {
                     Text("Cups").tag(false)
@@ -138,6 +121,8 @@ struct ContentView: View {
             }
             Button("Cancel", role: .cancel) {}
         }
+        .navigationTitle("💧 Toma Aguita")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func addWater(_ cups: Double) {

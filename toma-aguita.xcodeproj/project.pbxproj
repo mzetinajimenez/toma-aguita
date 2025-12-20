@@ -61,14 +61,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0B0229FF2EC91E49004C9925 /* Exceptions for "TomaAguitaWidget" folder in "TomaAguitaWidgetExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 0B0229E72EC91E46004C9925 /* TomaAguitaWidgetExtension */;
-		};
-		0BD251A62EF4A29500820E75 /* Exceptions for "toma-aguita" folder in "TomaAguitaWidgetExtension" target */ = {
+		0BD251DE2EF7278600820E75 /* Exceptions for "toma-aguita" folder in "TomaAguitaWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Models/WaterIntakeRecord.swift,
@@ -81,7 +74,7 @@
 		0B0229B72EC91285004C9925 /* toma-aguita */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				0BD251A62EF4A29500820E75 /* Exceptions for "toma-aguita" folder in "TomaAguitaWidgetExtension" target */,
+				0BD251DE2EF7278600820E75 /* Exceptions for "toma-aguita" folder in "TomaAguitaWidgetExtension" target */,
 			);
 			path = "toma-aguita";
 			sourceTree = "<group>";
@@ -98,9 +91,6 @@
 		};
 		0B0229EE2EC91E47004C9925 /* TomaAguitaWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				0B0229FF2EC91E49004C9925 /* Exceptions for "TomaAguitaWidget" folder in "TomaAguitaWidgetExtension" target */,
-			);
 			path = TomaAguitaWidget;
 			sourceTree = "<group>";
 		};
@@ -657,8 +647,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3T7N47Z579;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TomaAguitaWidget/Info.plist;
+				INFOPLIST_FILE = TomaAguitaWidgetExtension-Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TomaAguitaWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -685,8 +674,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3T7N47Z579;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TomaAguitaWidget/Info.plist;
+				INFOPLIST_FILE = TomaAguitaWidgetExtension-Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TomaAguitaWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
