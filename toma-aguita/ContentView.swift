@@ -8,13 +8,27 @@
 import SwiftUI
 import SwiftData
 
+enum UnitMode {
+    case cups
+    case oz
+    case mL
+
+    var displayName: String {
+        switch self {
+        case .cups: return "Cups"
+        case .oz: return "Oz"
+        case .mL: return "mL"
+        }
+    }
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     @State private var manager: WaterIntakeManager?
     @State private var showResetConfirmation = false
     @State private var previousProgress: Double = 0
-    @State private var isOzMode = false
+    @State private var unitMode: UnitMode = .cups
 
     var body: some View {
         ZStack {
@@ -29,13 +43,26 @@ struct ContentView: View {
             VStack(spacing: 30) {
                 Spacer()
 
+                // Title
+                Text("💧 Toma Aguita")
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.cyan, .blue],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .padding(.bottom, -10)
+
                 // Unit toggle
-                Picker("Unit", selection: $isOzMode) {
-                    Text("Cups").tag(false)
-                    Text("Oz").tag(true)
+                Picker("Unit", selection: $unitMode) {
+                    Text("Cups").tag(UnitMode.cups)
+                    Text("Oz").tag(UnitMode.oz)
+                    Text("mL").tag(UnitMode.mL)
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 200)
+                .frame(width: 280)
 
                 Spacer()
 
@@ -45,7 +72,7 @@ struct ContentView: View {
                         progress: manager.progress,
                         cupsConsumed: manager.cupsConsumed,
                         dailyGoal: WaterIntakeManager.dailyGoal,
-                        isOzMode: isOzMode
+                        unitMode: unitMode
                     )
                     .frame(width: 250, height: 250)
                 }
@@ -55,13 +82,28 @@ struct ContentView: View {
                 // Add Water Buttons
                 VStack(spacing: 20) {
                     HStack(spacing: 15) {
-                        AddWaterButton(amount: 0.5, label: isOzMode ? "+4" : "+0.5", isOzMode: isOzMode, iconType: .half) {
+                        AddWaterButton(
+                            amount: 0.5,
+                            label: labelForAmount(0.5),
+                            unitMode: unitMode,
+                            iconType: .half
+                        ) {
                             addWater(0.5)
                         }
-                        AddWaterButton(amount: 1.0, label: isOzMode ? "+8" : "+1", isOzMode: isOzMode, iconType: .one) {
+                        AddWaterButton(
+                            amount: 1.0,
+                            label: labelForAmount(1.0),
+                            unitMode: unitMode,
+                            iconType: .one
+                        ) {
                             addWater(1.0)
                         }
-                        AddWaterButton(amount: 2.0, label: isOzMode ? "+16" : "+2", isOzMode: isOzMode, iconType: .two) {
+                        AddWaterButton(
+                            amount: 2.0,
+                            label: labelForAmount(2.0),
+                            unitMode: unitMode,
+                            iconType: .two
+                        ) {
                             addWater(2.0)
                         }
                     }
@@ -71,7 +113,7 @@ struct ContentView: View {
                         Button(action: { removeWater(1.0) }) {
                             HStack {
                                 Image(systemName: "minus.circle.fill")
-                                Text("Remove \(isOzMode ? "8" : "1")")
+                                Text("Remove \(labelForAmount(1.0, includeSign: false))")
                                     .font(.system(size: 16, weight: .semibold, design: .rounded))
                             }
                             .frame(maxWidth: .infinity)
@@ -121,8 +163,20 @@ struct ContentView: View {
             }
             Button("Cancel", role: .cancel) {}
         }
-        .navigationTitle("💧 Toma Aguita")
-        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func labelForAmount(_ cups: Double, includeSign: Bool = true) -> String {
+        let sign = includeSign ? "+" : ""
+        switch unitMode {
+        case .cups:
+            return cups.truncatingRemainder(dividingBy: 1) == 0 ? "\(sign)\(Int(cups))" : "\(sign)\(cups)"
+        case .oz:
+            let oz = cups * 8
+            return "\(sign)\(Int(oz))"
+        case .mL:
+            let mL = cups * 240
+            return "\(sign)\(Int(mL))"
+        }
     }
 
     private func addWater(_ cups: Double) {
@@ -157,14 +211,44 @@ struct CircularProgressView: View {
     let progress: Double
     let cupsConsumed: Double
     let dailyGoal: Double
-    let isOzMode: Bool
+    let unitMode: UnitMode
+
+    private func roundToNearestHalf(_ value: Double) -> Double {
+        return round(value * 2) / 2
+    }
 
     var displayValue: Double {
-        isOzMode ? cupsConsumed * 8 : cupsConsumed
+        let roundedCups = roundToNearestHalf(cupsConsumed)
+        switch unitMode {
+        case .cups:
+            return roundedCups
+        case .oz:
+            return roundedCups * 8
+        case .mL:
+            return roundedCups * 240
+        }
     }
 
     var displayGoal: Double {
-        isOzMode ? dailyGoal * 8 : dailyGoal
+        switch unitMode {
+        case .cups:
+            return dailyGoal
+        case .oz:
+            return dailyGoal * 8
+        case .mL:
+            return dailyGoal * 240
+        }
+    }
+
+    var unitLabel: String {
+        switch unitMode {
+        case .cups:
+            return "cups"
+        case .oz:
+            return "oz"
+        case .mL:
+            return "mL"
+        }
     }
 
     var body: some View {
@@ -201,7 +285,7 @@ struct CircularProgressView: View {
                         )
                     )
 
-                Text("of \(Int(displayGoal)) \(isOzMode ? "oz" : "cups")")
+                Text("of \(Int(displayGoal)) \(unitLabel)")
                     .font(.system(size: 20, weight: .medium, design: .rounded))
                     .foregroundColor(.secondary)
 
@@ -224,9 +308,20 @@ enum DropIconType {
 struct AddWaterButton: View {
     let amount: Double
     let label: String
-    let isOzMode: Bool
+    let unitMode: UnitMode
     let iconType: DropIconType
     let action: () -> Void
+
+    var unitLabel: String {
+        switch unitMode {
+        case .cups:
+            return "cup\(amount > 1 ? "s" : "")"
+        case .oz:
+            return "oz"
+        case .mL:
+            return "mL"
+        }
+    }
 
     var body: some View {
         Button(action: action) {
@@ -250,7 +345,7 @@ struct AddWaterButton: View {
                 }
                 Text(label)
                     .font(.system(size: 18, weight: .bold, design: .rounded))
-                Text(isOzMode ? "oz" : "cup\(amount > 1 ? "s" : "")")
+                Text(unitLabel)
                     .font(.system(size: 12, weight: .medium, design: .rounded))
                     .opacity(0.7)
             }
