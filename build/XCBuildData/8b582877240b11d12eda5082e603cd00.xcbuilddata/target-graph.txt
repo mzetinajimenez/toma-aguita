@@ -1,4 +1,0 @@
-Target dependency graph (2 targets)
-Target 'toma-aguita' in project 'toma-aguita'
-➜ Explicit dependency on target 'TomaAguitaWidgetExtension' in project 'toma-aguita'
-Target 'TomaAguitaWidgetExtension' in project 'toma-aguita' (no dependencies)

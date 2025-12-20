@@ -14,8 +14,6 @@ struct MainTabView: View {
         TabView(selection: $selectedTab) {
             NavigationStack {
                 ContentView()
-                    .navigationTitle("💧 Toma Aguita")
-                    .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
                 Label("Track", systemImage: "drop.fill")
