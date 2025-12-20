@@ -6,12 +6,38 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct toma_aguitaApp: App {
+    let modelContainer: ModelContainer
+
+    init() {
+        do {
+            // Get shared container URL for App Group
+            guard let sharedURL = FileManager.default.containerURL(
+                forSecurityApplicationGroupIdentifier: "group.com.mzj.toma-aguita"
+            ) else {
+                fatalError("Failed to get App Group container")
+            }
+
+            // Configure SwiftData to use shared container
+            let storeURL = sharedURL.appendingPathComponent("TomaAguita.sqlite")
+            let config = ModelConfiguration(url: storeURL)
+
+            modelContainer = try ModelContainer(
+                for: WaterIntakeRecord.self,
+                configurations: config
+            )
+        } catch {
+            fatalError("Failed to initialize ModelContainer: \(error)")
+        }
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
+                .modelContainer(modelContainer)
         }
     }
 }
