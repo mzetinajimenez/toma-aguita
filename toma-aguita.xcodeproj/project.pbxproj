@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0B0229EB2EC91E47004C9925 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0229EA2EC91E47004C9925 /* WidgetKit.framework */; };
+		0B0229ED2EC91E47004C9925 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0229EC2EC91E47004C9925 /* SwiftUI.framework */; };
+		0B0229FE2EC91E49004C9925 /* TomaAguitaWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0B0229E82EC91E46004C9925 /* TomaAguitaWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		0B0229C32EC91286004C9925 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,17 +27,62 @@
 			remoteGlobalIDString = 0B0229B42EC91285004C9925;
 			remoteInfo = "toma-aguita";
 		};
+		0B0229FC2EC91E49004C9925 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0B0229AD2EC91285004C9925 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B0229E72EC91E46004C9925;
+			remoteInfo = TomaAguitaWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0B022A032EC91E49004C9925 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0B0229FE2EC91E49004C9925 /* TomaAguitaWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0B0229B52EC91285004C9925 /* toma-aguita.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "toma-aguita.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B0229C22EC91286004C9925 /* toma-aguitaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "toma-aguitaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B0229CC2EC91286004C9925 /* toma-aguitaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "toma-aguitaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B0229E82EC91E46004C9925 /* TomaAguitaWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TomaAguitaWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B0229EA2EC91E47004C9925 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		0B0229EC2EC91E47004C9925 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		0BD251A72EF50BA200820E75 /* TomaAguitaWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TomaAguitaWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0B0229FF2EC91E49004C9925 /* Exceptions for "TomaAguitaWidget" folder in "TomaAguitaWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0B0229E72EC91E46004C9925 /* TomaAguitaWidgetExtension */;
+		};
+		0BD251A62EF4A29500820E75 /* Exceptions for "toma-aguita" folder in "TomaAguitaWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/WaterIntakeRecord.swift,
+			);
+			target = 0B0229E72EC91E46004C9925 /* TomaAguitaWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0B0229B72EC91285004C9925 /* toma-aguita */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0BD251A62EF4A29500820E75 /* Exceptions for "toma-aguita" folder in "TomaAguitaWidgetExtension" target */,
+			);
 			path = "toma-aguita";
 			sourceTree = "<group>";
 		};
@@ -43,6 +94,14 @@
 		0B0229CF2EC91286004C9925 /* toma-aguitaUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "toma-aguitaUITests";
+			sourceTree = "<group>";
+		};
+		0B0229EE2EC91E47004C9925 /* TomaAguitaWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0B0229FF2EC91E49004C9925 /* Exceptions for "TomaAguitaWidget" folder in "TomaAguitaWidgetExtension" target */,
+			);
+			path = TomaAguitaWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,15 +128,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0B0229E52EC91E46004C9925 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B0229ED2EC91E47004C9925 /* SwiftUI.framework in Frameworks */,
+				0B0229EB2EC91E47004C9925 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0B0229AC2EC91285004C9925 = {
 			isa = PBXGroup;
 			children = (
+				0BD251A72EF50BA200820E75 /* TomaAguitaWidgetExtension.entitlements */,
 				0B0229B72EC91285004C9925 /* toma-aguita */,
 				0B0229C52EC91286004C9925 /* toma-aguitaTests */,
 				0B0229CF2EC91286004C9925 /* toma-aguitaUITests */,
+				0B0229EE2EC91E47004C9925 /* TomaAguitaWidget */,
+				0B0229E92EC91E47004C9925 /* Frameworks */,
 				0B0229B62EC91285004C9925 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +159,18 @@
 				0B0229B52EC91285004C9925 /* toma-aguita.app */,
 				0B0229C22EC91286004C9925 /* toma-aguitaTests.xctest */,
 				0B0229CC2EC91286004C9925 /* toma-aguitaUITests.xctest */,
+				0B0229E82EC91E46004C9925 /* TomaAguitaWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0B0229E92EC91E47004C9925 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0B0229EA2EC91E47004C9925 /* WidgetKit.framework */,
+				0B0229EC2EC91E47004C9925 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +183,12 @@
 				0B0229B12EC91285004C9925 /* Sources */,
 				0B0229B22EC91285004C9925 /* Frameworks */,
 				0B0229B32EC91285004C9925 /* Resources */,
+				0B022A032EC91E49004C9925 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0B0229FD2EC91E49004C9925 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0B0229B72EC91285004C9925 /* toma-aguita */,
@@ -163,6 +246,28 @@
 			productReference = 0B0229CC2EC91286004C9925 /* toma-aguitaUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		0B0229E72EC91E46004C9925 /* TomaAguitaWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0B022A002EC91E49004C9925 /* Build configuration list for PBXNativeTarget "TomaAguitaWidgetExtension" */;
+			buildPhases = (
+				0B0229E42EC91E46004C9925 /* Sources */,
+				0B0229E52EC91E46004C9925 /* Frameworks */,
+				0B0229E62EC91E46004C9925 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0B0229EE2EC91E47004C9925 /* TomaAguitaWidget */,
+			);
+			name = TomaAguitaWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = TomaAguitaWidgetExtension;
+			productReference = 0B0229E82EC91E46004C9925 /* TomaAguitaWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +289,9 @@
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = 0B0229B42EC91285004C9925;
 					};
+					0B0229E72EC91E46004C9925 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 				};
 			};
 			buildConfigurationList = 0B0229B02EC91285004C9925 /* Build configuration list for PBXProject "toma-aguita" */;
@@ -203,6 +311,7 @@
 				0B0229B42EC91285004C9925 /* toma-aguita */,
 				0B0229C12EC91286004C9925 /* toma-aguitaTests */,
 				0B0229CB2EC91286004C9925 /* toma-aguitaUITests */,
+				0B0229E72EC91E46004C9925 /* TomaAguitaWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +332,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0B0229CA2EC91286004C9925 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0B0229E62EC91E46004C9925 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +369,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0B0229E42EC91E46004C9925 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +388,11 @@
 			isa = PBXTargetDependency;
 			target = 0B0229B42EC91285004C9925 /* toma-aguita */;
 			targetProxy = 0B0229CD2EC91286004C9925 /* PBXContainerItemProxy */;
+		};
+		0B0229FD2EC91E49004C9925 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B0229E72EC91E46004C9925 /* TomaAguitaWidgetExtension */;
+			targetProxy = 0B0229FC2EC91E49004C9925 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -395,6 +523,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "toma-aguita/toma-aguita.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3T7N47Z579;
@@ -423,6 +552,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "toma-aguita/toma-aguita.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3T7N47Z579;
@@ -518,6 +648,62 @@
 			};
 			name = Release;
 		};
+		0B022A012EC91E49004C9925 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "toma-aguita.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3T7N47Z579;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TomaAguitaWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TomaAguitaWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mzj.toma-aguita.TomaAguitaWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0B022A022EC91E49004C9925 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "toma-aguita.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3T7N47Z579;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TomaAguitaWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TomaAguitaWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mzj.toma-aguita.TomaAguitaWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -553,6 +739,15 @@
 			buildConfigurations = (
 				0B0229DD2EC91286004C9925 /* Debug */,
 				0B0229DE2EC91286004C9925 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0B022A002EC91E49004C9925 /* Build configuration list for PBXNativeTarget "TomaAguitaWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B022A012EC91E49004C9925 /* Debug */,
+				0B022A022EC91E49004C9925 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
