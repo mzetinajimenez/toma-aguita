@@ -15,7 +15,7 @@ class WaterIntakeManager {
     static let dailyGoal: Double = 8.0
 
     private var modelContext: ModelContext
-    private var currentRecord: WaterIntakeRecord?
+    var currentRecord: WaterIntakeRecord?
 
     var cupsConsumed: Double {
         currentRecord?.cupsConsumed ?? 0
