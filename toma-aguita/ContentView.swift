@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 enum UnitMode {
     case cups
@@ -69,8 +70,14 @@ struct ContentView: View {
                 // Circular Progress
                 if let manager = manager {
                     CircularProgressView(
-                        progress: manager.progress,
-                        cupsConsumed: manager.cupsConsumed,
+                        cupsConsumed: Binding(
+                            get: { manager.cupsConsumed },
+                            set: { newValue in
+                                manager.currentRecord?.cupsConsumed = max(0, newValue)
+                                try? modelContext.save()
+                                WidgetCenter.shared.reloadAllTimelines()
+                            }
+                        ),
                         dailyGoal: WaterIntakeManager.dailyGoal,
                         unitMode: unitMode
                     )
@@ -208,24 +215,33 @@ struct ContentView: View {
 
 // MARK: - Circular Progress View
 struct CircularProgressView: View {
-    let progress: Double
-    let cupsConsumed: Double
+    @Binding var cupsConsumed: Double
     let dailyGoal: Double
     let unitMode: UnitMode
+
+    @State private var isDragging: Bool = false
+    @State private var dragProgress: Double = 0
+    @State private var lastSnappedCups: Double = 0
+    @State private var impactGenerator = UIImpactFeedbackGenerator(style: .light)
+
+    var progress: Double {
+        isDragging ? dragProgress : min(cupsConsumed / dailyGoal, 1.0)
+    }
 
     private func roundToNearestHalf(_ value: Double) -> Double {
         return round(value * 2) / 2
     }
 
     var displayValue: Double {
-        let roundedCups = roundToNearestHalf(cupsConsumed)
+        // Use drag progress when dragging, otherwise use actual cupsConsumed
+        let currentCups = isDragging ? snappedCups(fromProgress: dragProgress) : cupsConsumed
         switch unitMode {
         case .cups:
-            return roundedCups
+            return currentCups
         case .oz:
-            return roundedCups * 8
+            return currentCups * 8
         case .mL:
-            return roundedCups * 240
+            return currentCups * 240
         }
     }
 
@@ -251,31 +267,67 @@ struct CircularProgressView: View {
         }
     }
 
+    // Convert drag location to angle (0-360 degrees)
+    private func angleFromLocation(_ location: CGPoint, in size: CGSize) -> Double {
+        let center = CGPoint(x: size.width / 2, y: size.height / 2)
+        let vector = CGPoint(x: location.x - center.x, y: location.y - center.y)
+        let angleRadians = atan2(vector.y, vector.x)
+        let angleDegrees = (angleRadians * 180 / .pi + 90).truncatingRemainder(dividingBy: 360)
+        return angleDegrees < 0 ? angleDegrees + 360 : angleDegrees
+    }
+
+    // Get increment size for current unit mode
+    private func incrementInCups() -> Double {
+        switch unitMode {
+        case .cups: return 0.25
+        case .oz: return 0.125  // 1 oz = 1/8 cup
+        case .mL: return 10.0 / 240.0  // 10 mL in cups
+        }
+    }
+
+    // Snap progress to nearest increment
+    private func snappedCups(fromProgress rawProgress: Double) -> Double {
+        let cupsFromProgress = rawProgress * dailyGoal
+        let increment = incrementInCups()
+        return round(cupsFromProgress / increment) * increment
+    }
+
     var body: some View {
-        ZStack {
-            // Background circle
-            Circle()
-                .stroke(Color.cyan.opacity(0.2), lineWidth: 24)
+        GeometryReader { geometry in
+            ZStack {
+                // Background circle
+                Circle()
+                    .stroke(Color.cyan.opacity(0.2), lineWidth: 24)
 
-            // Progress circle
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(
-                    LinearGradient(
-                        colors: [.cyan, .blue],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    style: StrokeStyle(lineWidth: 24, lineCap: .round)
-                )
-                .rotationEffect(.degrees(-90))
-                .animation(.spring(response: 0.6, dampingFraction: 0.8), value: progress)
+                // Progress circle
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(
+                        LinearGradient(
+                            colors: cupsConsumed > dailyGoal ? [.orange, .yellow] : [.cyan, .blue],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        style: StrokeStyle(lineWidth: 24, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(-90))
+                    .animation(
+                        isDragging
+                            ? nil  // No animation during drag for immediate response
+                            : .spring(response: 0.6, dampingFraction: 0.8),
+                        value: progress
+                    )
 
-            // Center content
+                // Center content
             VStack(spacing: 8) {
-                Text(displayValue.truncatingRemainder(dividingBy: 1) == 0
-                     ? "\(Int(displayValue))"
-                     : String(format: "%.1f", displayValue))
+                Text({
+                    // For cups, round to nearest 0.25
+                    let value = unitMode == .cups ? round(displayValue * 4) / 4 : displayValue
+                    // Check if it's a whole number
+                    return abs(value - round(value)) < 0.01
+                        ? "\(Int(round(value)))"
+                        : String(format: unitMode == .cups ? "%.2f" : "%.1f", value)
+                }())
                     .font(.system(size: 64, weight: .bold, design: .rounded))
                     .foregroundStyle(
                         LinearGradient(
@@ -294,6 +346,56 @@ struct CircularProgressView: View {
                         .font(.system(size: 16, weight: .semibold, design: .rounded))
                         .foregroundColor(.green)
                         .padding(.top, 4)
+                }
+            }
+            } // Close ZStack
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        if !isDragging {
+                            isDragging = true
+                            impactGenerator.prepare()
+                            lastSnappedCups = cupsConsumed
+                        }
+
+                        let angle = angleFromLocation(value.location, in: geometry.size)
+                        let rawProgress = angle / 360.0
+                        dragProgress = rawProgress
+
+                        let snapped = snappedCups(fromProgress: rawProgress)
+
+                        // Haptic feedback on increment snap
+                        if snapped != lastSnappedCups {
+                            impactGenerator.impactOccurred(intensity: 0.5)
+                            lastSnappedCups = snapped
+
+                            // Success haptic when crossing goal threshold
+                            let prevProgress = (lastSnappedCups - incrementInCups()) / dailyGoal
+                            let currProgress = snapped / dailyGoal
+                            if prevProgress < 1.0 && currProgress >= 1.0 {
+                                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            }
+                        }
+                    }
+                    .onEnded { _ in
+                        isDragging = false
+
+                        // Update binding with final snapped value
+                        let finalCups = snappedCups(fromProgress: dragProgress)
+                        cupsConsumed = max(0, min(finalCups, 16.0))  // Cap at 16 cups max
+                    }
+            )
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Water intake tracker")
+            .accessibilityValue("\(Int(cupsConsumed)) of \(Int(dailyGoal)) cups consumed")
+            .accessibilityAdjustableAction { direction in
+                switch direction {
+                case .increment:
+                    cupsConsumed = min(cupsConsumed + incrementInCups(), 16.0)
+                case .decrement:
+                    cupsConsumed = max(cupsConsumed - incrementInCups(), 0)
+                @unknown default:
+                    break
                 }
             }
         }
