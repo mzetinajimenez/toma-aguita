@@ -1,9 +1,6 @@
 //
 //  WaterIntakeManager.swift
 //  toma-aguita
-//
-//  Created by Claude Code
-//
 
 import Foundation
 import SwiftData
@@ -12,17 +9,20 @@ import WidgetKit
 
 @Observable
 class WaterIntakeManager {
-    static let dailyGoal: Double = 8.0
-
+    private let preferences = PreferencesManager.shared
     private var modelContext: ModelContext
     var currentRecord: WaterIntakeRecord?
+
+    var dailyGoal: Double {
+        preferences.dailyGoal
+    }
 
     var cupsConsumed: Double {
         currentRecord?.cupsConsumed ?? 0
     }
 
     var progress: Double {
-        min(cupsConsumed / Self.dailyGoal, 1.0)
+        min(cupsConsumed / preferences.dailyGoalInCups, 1.0)
     }
 
     init(modelContext: ModelContext) {

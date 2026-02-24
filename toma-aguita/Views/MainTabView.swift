@@ -2,13 +2,12 @@
 //  MainTabView.swift
 //  toma-aguita
 //
-//  Created by Claude Code
-//
 
 import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab = 0
+    @State private var preferences = PreferencesManager.shared
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -35,8 +34,16 @@ struct MainTabView: View {
                 Label("Friends", systemImage: "person.2.fill")
             }
             .tag(2)
+
+            NavigationStack {
+                SettingsView()
+            }
+            .tabItem {
+                Label("Settings", systemImage: "gearshape.fill")
+            }
+            .tag(3)
         }
-        .tint(.cyan)
+        .tint(preferences.colorScheme.primaryColor)
     }
 }
 

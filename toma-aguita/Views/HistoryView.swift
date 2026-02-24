@@ -2,17 +2,16 @@
 //  HistoryView.swift
 //  toma-aguita
 //
-//  Created by Claude Code
-//
 
 import SwiftUI
 
 struct HistoryView: View {
+    @State private var preferences = PreferencesManager.shared
+
     var body: some View {
         ZStack {
-            // Background gradient matching ContentView
             LinearGradient(
-                colors: [Color.cyan.opacity(0.2), Color.blue.opacity(0.1)],
+                colors: preferences.colorScheme.backgroundGradientColors,
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -23,7 +22,7 @@ struct HistoryView: View {
                     .font(.system(size: 80))
                     .foregroundStyle(
                         LinearGradient(
-                            colors: [.cyan, .blue],
+                            colors: preferences.colorScheme.gradientColors,
                             startPoint: .leading,
                             endPoint: .trailing
                         )
@@ -34,22 +33,25 @@ struct HistoryView: View {
                         .font(.system(size: 32, weight: .bold, design: .rounded))
                         .foregroundStyle(
                             LinearGradient(
-                                colors: [.cyan, .blue],
+                                colors: preferences.colorScheme.gradientColors,
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
                         )
+                        .frame(maxWidth: .infinity, alignment: .center)
 
                     Text("Your hydration history will appear here!")
                         .font(.system(size: 18, weight: .medium, design: .rounded))
                         .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
                     Text("Keep tracking daily to see your progress over time")
                         .font(.system(size: 16, weight: .regular, design: .rounded))
                         .foregroundColor(.secondary)
                         .opacity(0.8)
-                        .multilineTextAlignment(.center)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding(.horizontal, 40)
             }

@@ -1,9 +1,10 @@
 #!/usr/bin/env swift
 
-import SwiftUI
 import AppKit
+import SwiftUI
 
 // MARK: - Icon Configuration
+
 struct IconConfig {
     let topColor: Color
     let bottomColor: Color
@@ -33,6 +34,7 @@ struct IconConfig {
 }
 
 // MARK: - Icon View
+
 struct IconView: View {
     let config: IconConfig
 
@@ -60,6 +62,7 @@ struct IconView: View {
 }
 
 // MARK: - Icon Generator
+
 class IconGenerator {
     @MainActor
     static func generateIcon(config: IconConfig, outputPath: String) {
@@ -96,6 +99,7 @@ class IconGenerator {
 }
 
 // MARK: - Main Execution
+
 @MainActor
 func main() {
     print("🎨 Starting app icon generation...\n")
