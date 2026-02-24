@@ -5,23 +5,10 @@
 //  Created by Marvin Zetina on 11/15/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
+import UIKit
 import WidgetKit
-
-enum UnitMode {
-    case cups
-    case oz
-    case mL
-
-    var displayName: String {
-        switch self {
-        case .cups: return "Cups"
-        case .oz: return "Oz"
-        case .mL: return "mL"
-        }
-    }
-}
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -30,12 +17,13 @@ struct ContentView: View {
     @State private var showResetConfirmation = false
     @State private var previousProgress: Double = 0
     @State private var unitMode: UnitMode = .cups
+    @State private var preferences = PreferencesManager.shared
 
     var body: some View {
         ZStack {
             // Background gradient
             LinearGradient(
-                colors: [Color.cyan.opacity(0.2), Color.blue.opacity(0.1)],
+                colors: preferences.colorScheme.backgroundGradientColors,
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -49,7 +37,7 @@ struct ContentView: View {
                     .font(.system(size: 28, weight: .bold, design: .rounded))
                     .foregroundStyle(
                         LinearGradient(
-                            colors: [.cyan, .blue],
+                            colors: preferences.colorScheme.gradientColors,
                             startPoint: .leading,
                             endPoint: .trailing
                         )
@@ -78,8 +66,9 @@ struct ContentView: View {
                                 WidgetCenter.shared.reloadAllTimelines()
                             }
                         ),
-                        dailyGoal: WaterIntakeManager.dailyGoal,
-                        unitMode: unitMode
+                        dailyGoal: manager.dailyGoal,
+                        unitMode: unitMode,
+                        colorScheme: preferences.colorScheme
                     )
                     .frame(width: 250, height: 250)
                 }
@@ -93,7 +82,8 @@ struct ContentView: View {
                             amount: 0.5,
                             label: labelForAmount(0.5),
                             unitMode: unitMode,
-                            iconType: .half
+                            iconType: .half,
+                            colorScheme: preferences.colorScheme
                         ) {
                             addWater(0.5)
                         }
@@ -101,7 +91,8 @@ struct ContentView: View {
                             amount: 1.0,
                             label: labelForAmount(1.0),
                             unitMode: unitMode,
-                            iconType: .one
+                            iconType: .one,
+                            colorScheme: preferences.colorScheme
                         ) {
                             addWater(1.0)
                         }
@@ -109,7 +100,8 @@ struct ContentView: View {
                             amount: 2.0,
                             label: labelForAmount(2.0),
                             unitMode: unitMode,
-                            iconType: .two
+                            iconType: .two,
+                            colorScheme: preferences.colorScheme
                         ) {
                             addWater(2.0)
                         }
@@ -153,12 +145,18 @@ struct ContentView: View {
             if manager == nil {
                 manager = WaterIntakeManager(modelContext: modelContext)
             }
+            // Initialize unit mode from preferences
+            unitMode = preferences.defaultUnitMode
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 // Check for midnight reset when app becomes active
                 manager?.checkForMidnightReset()
             }
+        }
+        .onChange(of: unitMode) { _, newMode in
+            // Save unit mode preference when it changes
+            preferences.defaultUnitMode = newMode
         }
         .confirmationDialog(
             "Reset Today's Water Intake?",
@@ -181,7 +179,7 @@ struct ContentView: View {
             let oz = cups * 8
             return "\(sign)\(Int(oz))"
         case .mL:
-            let mL = cups * 240
+            let mL = cups * 236.588
             return "\(sign)\(Int(mL))"
         }
     }
@@ -194,7 +192,7 @@ struct ContentView: View {
         manager?.addWater(cups: cups)
 
         // Celebrate when reaching the goal
-        if previousProgress < 1.0 && (manager?.progress ?? 0) >= 1.0 {
+        if previousProgress < 1.0, (manager?.progress ?? 0) >= 1.0 {
             let notification = UINotificationFeedbackGenerator()
             notification.notificationOccurred(.success)
         }
@@ -214,18 +212,37 @@ struct ContentView: View {
 }
 
 // MARK: - Circular Progress View
+
 struct CircularProgressView: View {
     @Binding var cupsConsumed: Double
     let dailyGoal: Double
     let unitMode: UnitMode
+    let colorScheme: ColorSchemeOption
 
     @State private var isDragging: Bool = false
     @State private var dragProgress: Double = 0
     @State private var lastSnappedCups: Double = 0
     @State private var impactGenerator = UIImpactFeedbackGenerator(style: .light)
 
+    private func cupsToCurrentUnit(_ cups: Double) -> Double {
+        switch unitMode {
+        case .cups: return cups
+        case .oz: return cups * 8
+        case .mL: return cups * 236.588
+        }
+    }
+
+    private var dailyGoalInCups: Double {
+        switch unitMode {
+        case .cups: return dailyGoal
+        case .oz: return dailyGoal / 8
+        case .mL: return dailyGoal / 236.588
+        }
+    }
+
     var progress: Double {
-        isDragging ? dragProgress : min(cupsConsumed / dailyGoal, 1.0)
+        let consumedInUnit = cupsToCurrentUnit(cupsConsumed)
+        return isDragging ? dragProgress : min(consumedInUnit / dailyGoal, 1.0)
     }
 
     private func roundToNearestHalf(_ value: Double) -> Double {
@@ -233,27 +250,8 @@ struct CircularProgressView: View {
     }
 
     var displayValue: Double {
-        // Use drag progress when dragging, otherwise use actual cupsConsumed
         let currentCups = isDragging ? snappedCups(fromProgress: dragProgress) : cupsConsumed
-        switch unitMode {
-        case .cups:
-            return currentCups
-        case .oz:
-            return currentCups * 8
-        case .mL:
-            return currentCups * 240
-        }
-    }
-
-    var displayGoal: Double {
-        switch unitMode {
-        case .cups:
-            return dailyGoal
-        case .oz:
-            return dailyGoal * 8
-        case .mL:
-            return dailyGoal * 240
-        }
+        return cupsToCurrentUnit(currentCups)
     }
 
     var unitLabel: String {
@@ -267,7 +265,7 @@ struct CircularProgressView: View {
         }
     }
 
-    // Convert drag location to angle (0-360 degrees)
+    /// Convert drag location to angle (0-360 degrees)
     private func angleFromLocation(_ location: CGPoint, in size: CGSize) -> Double {
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let vector = CGPoint(x: location.x - center.x, y: location.y - center.y)
@@ -276,18 +274,18 @@ struct CircularProgressView: View {
         return angleDegrees < 0 ? angleDegrees + 360 : angleDegrees
     }
 
-    // Get increment size for current unit mode
+    /// Get increment size for current unit mode
     private func incrementInCups() -> Double {
         switch unitMode {
         case .cups: return 0.25
-        case .oz: return 0.125  // 1 oz = 1/8 cup
-        case .mL: return 10.0 / 240.0  // 10 mL in cups
+        case .oz: return 0.125 // 1 oz = 1/8 cup
+        case .mL: return 10.0 / 236.588 // 10 mL in cups
         }
     }
 
-    // Snap progress to nearest increment
+    /// Snap progress to nearest increment
     private func snappedCups(fromProgress rawProgress: Double) -> Double {
-        let cupsFromProgress = rawProgress * dailyGoal
+        let cupsFromProgress = rawProgress * dailyGoalInCups
         let increment = incrementInCups()
         return round(cupsFromProgress / increment) * increment
     }
@@ -297,14 +295,14 @@ struct CircularProgressView: View {
             ZStack {
                 // Background circle
                 Circle()
-                    .stroke(Color.cyan.opacity(0.2), lineWidth: 24)
+                    .stroke(colorScheme.primaryColor.opacity(0.2), lineWidth: 24)
 
                 // Progress circle
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(
                         LinearGradient(
-                            colors: cupsConsumed > dailyGoal ? [.orange, .yellow] : [.cyan, .blue],
+                            colors: cupsConsumed > dailyGoalInCups ? [.orange, .yellow] : colorScheme.gradientColors,
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         ),
@@ -313,41 +311,41 @@ struct CircularProgressView: View {
                     .rotationEffect(.degrees(-90))
                     .animation(
                         isDragging
-                            ? nil  // No animation during drag for immediate response
+                            ? nil // No animation during drag for immediate response
                             : .spring(response: 0.6, dampingFraction: 0.8),
                         value: progress
                     )
 
                 // Center content
-            VStack(spacing: 8) {
-                Text({
-                    // For cups, round to nearest 0.25
-                    let value = unitMode == .cups ? round(displayValue * 4) / 4 : displayValue
-                    // Check if it's a whole number
-                    return abs(value - round(value)) < 0.01
-                        ? "\(Int(round(value)))"
-                        : String(format: unitMode == .cups ? "%.2f" : "%.1f", value)
-                }())
-                    .font(.system(size: 64, weight: .bold, design: .rounded))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.cyan, .blue],
-                            startPoint: .leading,
-                            endPoint: .trailing
+                VStack(spacing: 8) {
+                    Text({
+                        // For cups, round to nearest 0.25
+                        let value = unitMode == .cups ? round(displayValue * 4) / 4 : displayValue
+                        // Check if it's a whole number
+                        return abs(value - round(value)) < 0.01
+                            ? "\(Int(round(value)))"
+                            : String(format: unitMode == .cups ? "%.2f" : "%.1f", value)
+                    }())
+                        .font(.system(size: 64, weight: .bold, design: .rounded))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: colorScheme.gradientColors,
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
                         )
-                    )
 
-                Text("of \(Int(displayGoal)) \(unitLabel)")
-                    .font(.system(size: 20, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
+                    Text("of \(Int(dailyGoal.rounded())) \(unitLabel)")
+                        .font(.system(size: 20, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
 
-                if progress >= 1.0 {
-                    Text("🎉 Goal Reached!")
-                        .font(.system(size: 16, weight: .semibold, design: .rounded))
-                        .foregroundColor(.green)
-                        .padding(.top, 4)
+                    if progress >= 1.0 {
+                        Text("🎉 Goal Reached!")
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
+                            .foregroundColor(.green)
+                            .padding(.top, 4)
+                    }
                 }
-            }
             } // Close ZStack
             .gesture(
                 DragGesture(minimumDistance: 0)
@@ -370,9 +368,9 @@ struct CircularProgressView: View {
                             lastSnappedCups = snapped
 
                             // Success haptic when crossing goal threshold
-                            let prevProgress = (lastSnappedCups - incrementInCups()) / dailyGoal
-                            let currProgress = snapped / dailyGoal
-                            if prevProgress < 1.0 && currProgress >= 1.0 {
+                            let prevProgress = (lastSnappedCups - incrementInCups()) / dailyGoalInCups
+                            let currProgress = snapped / dailyGoalInCups
+                            if prevProgress < 1.0, currProgress >= 1.0 {
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
                         }
@@ -382,7 +380,7 @@ struct CircularProgressView: View {
 
                         // Update binding with final snapped value
                         let finalCups = snappedCups(fromProgress: dragProgress)
-                        cupsConsumed = max(0, min(finalCups, 16.0))  // Cap at 16 cups max
+                        cupsConsumed = max(0, min(finalCups, 16.0)) // Cap at 16 cups max
                     }
             )
             .accessibilityElement(children: .ignore)
@@ -403,6 +401,7 @@ struct CircularProgressView: View {
 }
 
 // MARK: - Add Water Button
+
 enum DropIconType {
     case half, one, two
 }
@@ -412,6 +411,7 @@ struct AddWaterButton: View {
     let label: String
     let unitMode: UnitMode
     let iconType: DropIconType
+    let colorScheme: ColorSchemeOption
     let action: () -> Void
 
     var unitLabel: String {
@@ -455,20 +455,20 @@ struct AddWaterButton: View {
             .padding(.vertical, 20)
             .background(
                 LinearGradient(
-                    colors: [Color.cyan.opacity(0.2), Color.blue.opacity(0.2)],
+                    colors: colorScheme.buttonGradientColors,
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
             )
             .foregroundStyle(
                 LinearGradient(
-                    colors: [.cyan, .blue],
+                    colors: colorScheme.gradientColors,
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
             )
             .cornerRadius(20)
-            .shadow(color: Color.cyan.opacity(0.3), radius: 8, x: 0, y: 4)
+            .shadow(color: colorScheme.primaryColor.opacity(0.3), radius: 8, x: 0, y: 4)
         }
     }
 }

@@ -5,28 +5,29 @@
 //  Created by Claude Code
 //
 
-import WidgetKit
-import SwiftUI
 import SwiftData
+import SwiftUI
+import WidgetKit
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> WaterIntakeEntry {
-        WaterIntakeEntry(date: Date(), cupsConsumed: 0, dailyGoal: 8)
+    func placeholder(in _: Context) -> WaterIntakeEntry {
+        WaterIntakeEntry(date: Date(), cupsConsumed: 0, dailyGoal: PreferencesManager.shared.dailyGoal, unitMode: PreferencesManager.shared.defaultUnitMode)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (WaterIntakeEntry) -> Void) {
-        let entry = WaterIntakeEntry(date: Date(), cupsConsumed: 3, dailyGoal: 8)
+    func getSnapshot(in _: Context, completion: @escaping (WaterIntakeEntry) -> Void) {
+        let entry = WaterIntakeEntry(date: Date(), cupsConsumed: 3, dailyGoal: PreferencesManager.shared.dailyGoal, unitMode: PreferencesManager.shared.defaultUnitMode)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<WaterIntakeEntry>) -> Void) {
+    func getTimeline(in _: Context, completion: @escaping (Timeline<WaterIntakeEntry>) -> Void) {
         let currentDate = Date()
         let cupsConsumed = fetchTodayWaterIntake()
 
         let entry = WaterIntakeEntry(
             date: currentDate,
             cupsConsumed: cupsConsumed,
-            dailyGoal: 8
+            dailyGoal: PreferencesManager.shared.dailyGoal,
+            unitMode: PreferencesManager.shared.defaultUnitMode
         )
 
         // Update timeline every hour
@@ -74,10 +75,17 @@ struct Provider: TimelineProvider {
 struct WaterIntakeEntry: TimelineEntry {
     let date: Date
     let cupsConsumed: Double
-    let dailyGoal: Double
+    let dailyGoal: Double // in current unit
+    let unitMode: UnitMode
 
     var progress: Double {
-        min(cupsConsumed / dailyGoal, 1.0)
+        let consumedInUnit: Double
+        switch unitMode {
+        case .cups: consumedInUnit = cupsConsumed
+        case .oz: consumedInUnit = cupsConsumed * 8
+        case .mL: consumedInUnit = cupsConsumed * 236.588
+        }
+        return min(consumedInUnit / dailyGoal, 1.0)
     }
 }
 
@@ -115,8 +123,8 @@ struct TomaAguitaWidgetEntryView: View {
                         .foregroundColor(.cyan.opacity(0.8))
 
                     Text(entry.cupsConsumed.truncatingRemainder(dividingBy: 1) == 0
-                         ? "\(Int(entry.cupsConsumed))"
-                         : String(format: "%.1f", entry.cupsConsumed))
+                        ? "\(Int(entry.cupsConsumed))"
+                        : String(format: "%.1f", entry.cupsConsumed))
                         .font(.system(size: 20, weight: .regular, design: .rounded))
                         .foregroundColor(.white)
                 }
@@ -143,7 +151,7 @@ struct TomaAguitaWidget: Widget {
 #Preview(as: .accessoryCircular) {
     TomaAguitaWidget()
 } timeline: {
-    WaterIntakeEntry(date: .now, cupsConsumed: 3, dailyGoal: 8)
-    WaterIntakeEntry(date: .now, cupsConsumed: 6, dailyGoal: 8)
-    WaterIntakeEntry(date: .now, cupsConsumed: 8, dailyGoal: 8)
+    WaterIntakeEntry(date: .now, cupsConsumed: 3, dailyGoal: 8, unitMode: .cups)
+    WaterIntakeEntry(date: .now, cupsConsumed: 6, dailyGoal: 8, unitMode: .cups)
+    WaterIntakeEntry(date: .now, cupsConsumed: 8, dailyGoal: 8, unitMode: .cups)
 }

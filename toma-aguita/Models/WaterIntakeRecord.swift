@@ -2,8 +2,6 @@
 //  WaterIntakeRecord.swift
 //  toma-aguita
 //
-//  Created by Claude Code
-//
 
 import Foundation
 import SwiftData

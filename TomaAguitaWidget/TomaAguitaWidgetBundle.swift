@@ -5,8 +5,8 @@
 //  Created by Claude Code
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct TomaAguitaWidgetBundle: WidgetBundle {

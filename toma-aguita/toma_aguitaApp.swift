@@ -5,8 +5,8 @@
 //  Created by Marvin Zetina on 11/15/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct toma_aguitaApp: App {
