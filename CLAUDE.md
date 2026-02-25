@@ -36,9 +36,17 @@ toma-aguita/
 │   ├── ContentView.swift               # Main UI with circular progress and controls
 │   ├── Models/
 │   │   ├── WaterIntakeRecord.swift    # SwiftData model for daily water intake
-│   │   └── WaterIntakeManager.swift   # Business logic and data management
+│   │   ├── WaterIntakeManager.swift   # Business logic and data management
+│   │   ├── PreferencesManager.swift   # @Observable singleton for user settings (UserDefaults via App Group)
+│   │   ├── ColorSchemeOption.swift    # Enum for theme color options
+│   │   └── UnitMode.swift            # Enum for measurement units (cups/oz/mL)
+│   ├── Views/
+│   │   ├── MainTabView.swift          # Root tab container
+│   │   ├── SettingsView.swift         # User preferences UI
+│   │   ├── HistoryView.swift          # Daily history list
+│   │   └── SocialView.swift           # Friends/social placeholder
 │   └── Assets.xcassets/               # Asset catalog
-├── TomaAguitaWidget/                  # Widget extension (needs to be added as target)
+├── TomaAguitaWidget/                  # Widget extension target
 │   ├── TomaAguitaWidget.swift         # Lock screen circular widget
 │   └── TomaAguitaWidgetBundle.swift   # Widget bundle entry point
 ├── toma-aguitaTests/                  # Unit tests (Swift Testing framework)
@@ -47,14 +55,26 @@ toma-aguita/
 
 ## Building and Running
 
-### Build the app
+A `Makefile` is included for common dev tasks. Prefer `make` over raw xcodebuild.
+
 ```bash
-xcodebuild -project toma-aguita.xcodeproj -scheme toma-aguita -configuration Debug build
+make fmt      # Format all Swift files in place (swiftformat .)
+make lint     # Check formatting without modifying files
+make build    # Debug build targeting iPhone 16 simulator
+make test     # Run tests on iPhone 16 simulator
+make clean    # Clean build folder
+```
+
+**Important**: always pass `-destination` to xcodebuild. Without it, it defaults to "My Mac" which fails provisioning for an iOS-only profile.
+
+### Build the app (raw)
+```bash
+xcodebuild -project toma-aguita.xcodeproj -scheme toma-aguita -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16' build
 ```
 
 ### Build for release
 ```bash
-xcodebuild -project toma-aguita.xcodeproj -scheme toma-aguita -configuration Release build
+xcodebuild -project toma-aguita.xcodeproj -scheme toma-aguita -configuration Release -destination 'platform=iOS Simulator,name=iPhone 16' build
 ```
 
 ### Clean build folder
@@ -89,11 +109,12 @@ xcodebuild test -project toma-aguita.xcodeproj -scheme toma-aguita -destination 
 
 ### Data Layer
 - **SwiftData Model**: `WaterIntakeRecord` stores daily water intake with date and cups consumed
-- **Manager Pattern**: `WaterIntakeManager` is an `@Observable` class that:
+- **Manager Pattern**: `WaterIntakeManager` is a `final @Observable` class that:
   - Manages CRUD operations for water intake records
   - Handles midnight auto-reset logic
-  - Calculates progress toward 8-cup daily goal
+  - Calculates progress toward daily goal
   - Stores historical data for potential future features
+- **Preferences**: `PreferencesManager` is a `final @Observable` singleton that reads/writes user settings (daily goal, unit mode, color scheme) to `UserDefaults` via the App Group `group.com.mzj.toma-aguita` so the widget can share the same values
 
 ### App Entry Point
 - Uses SwiftUI's `@main` attribute on `toma_aguitaApp` struct
@@ -136,6 +157,17 @@ Quick steps:
 2. Add the widget Swift files to the new target
 3. Share the model files with both targets
 4. Build and run
+
+## Tooling
+
+### SwiftFormat
+`.swiftformat` is checked in at the repo root. Run `make fmt` before committing.
+
+Active opt-in rules: `isEmpty`, `privateStateVariables`, `unusedPrivateDeclarations`, `blockComments`, `wrapConditionalBodies`, `wrapEnumCases`, `organizeDeclarations`, `preferFinalClasses`.
+
+`conditionalAssignment` is disabled to avoid `let x = if … { } else { }` one-liners.
+
+`organizeDeclarations` adds `// MARK: Lifecycle / Internal / Private` sections — this is the expected member ordering across all types in the codebase.
 
 ## Development Notes
 

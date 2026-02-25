@@ -7,14 +7,14 @@ SIMULATOR = platform=iOS Simulator,name=iPhone 16
 help:
 	@echo "Toma Aguita — available commands:"
 	@echo ""
-	@echo "  make format   Format all Swift files in place"
+	@echo "  make fmt      Format all Swift files in place"
 	@echo "  make lint     Check formatting without modifying files"
 	@echo "  make build    Debug build"
 	@echo "  make test     Run tests on iPhone 16 simulator"
 	@echo "  make clean    Clean build folder"
 	@echo ""
 
-format:
+fmt:
 	swiftformat .
 
 lint:
