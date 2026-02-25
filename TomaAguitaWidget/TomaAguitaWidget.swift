@@ -11,11 +11,21 @@ import WidgetKit
 
 struct Provider: TimelineProvider {
     func placeholder(in _: Context) -> WaterIntakeEntry {
-        WaterIntakeEntry(date: Date(), cupsConsumed: 0, dailyGoal: PreferencesManager.shared.dailyGoal, unitMode: PreferencesManager.shared.defaultUnitMode)
+        WaterIntakeEntry(
+            date: Date(),
+            cupsConsumed: 0,
+            dailyGoal: PreferencesManager.shared.dailyGoal,
+            unitMode: PreferencesManager.shared.defaultUnitMode
+        )
     }
 
     func getSnapshot(in _: Context, completion: @escaping (WaterIntakeEntry) -> Void) {
-        let entry = WaterIntakeEntry(date: Date(), cupsConsumed: 3, dailyGoal: PreferencesManager.shared.dailyGoal, unitMode: PreferencesManager.shared.defaultUnitMode)
+        let entry = WaterIntakeEntry(
+            date: Date(),
+            cupsConsumed: 3,
+            dailyGoal: PreferencesManager.shared.dailyGoal,
+            unitMode: PreferencesManager.shared.defaultUnitMode
+        )
         completion(entry)
     }
 

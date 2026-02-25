@@ -73,15 +73,17 @@ struct SettingsView: View {
 
                                 Stepper(value: $preferences.dailyGoal, in: stepperRange, step: stepperStep) {
                                     HStack {
-                                        Text("\(Int(preferences.dailyGoal.rounded())) \(preferences.defaultUnitMode.displayName)")
-                                            .font(.system(size: 24, weight: .bold, design: .rounded))
-                                            .foregroundStyle(
-                                                LinearGradient(
-                                                    colors: preferences.colorScheme.gradientColors,
-                                                    startPoint: .leading,
-                                                    endPoint: .trailing
-                                                )
+                                        Text(
+                                            "\(Int(preferences.dailyGoal.rounded())) \(preferences.defaultUnitMode.displayName)"
+                                        )
+                                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                                        .foregroundStyle(
+                                            LinearGradient(
+                                                colors: preferences.colorScheme.gradientColors,
+                                                startPoint: .leading,
+                                                endPoint: .trailing
                                             )
+                                        )
                                         Spacer()
                                     }
                                 }
