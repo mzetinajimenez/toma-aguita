@@ -21,7 +21,7 @@ lint:
 	swiftformat --lint .
 
 build:
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug build
+	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug -destination '$(SIMULATOR)' build
 
 test:
 	xcodebuild test -project $(PROJECT) -scheme $(SCHEME) -destination '$(SIMULATOR)'

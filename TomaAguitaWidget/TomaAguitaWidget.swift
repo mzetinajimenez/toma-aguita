@@ -10,6 +10,8 @@ import SwiftUI
 import WidgetKit
 
 struct Provider: TimelineProvider {
+    // MARK: Internal
+
     func placeholder(in _: Context) -> WaterIntakeEntry {
         WaterIntakeEntry(
             date: Date(),
@@ -45,6 +47,8 @@ struct Provider: TimelineProvider {
         let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
         completion(timeline)
     }
+
+    // MARK: Private
 
     private func fetchTodayWaterIntake() -> Double {
         do {
