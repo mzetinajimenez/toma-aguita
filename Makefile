@@ -2,7 +2,7 @@ SCHEME    = toma-aguita
 PROJECT   = toma-aguita.xcodeproj
 SIMULATOR = platform=iOS Simulator,name=iPhone 16
 
-.PHONY: help format lint build test clean
+.PHONY: help fmt lint build test clean
 
 help:
 	@echo "Toma Aguita — available commands:"
