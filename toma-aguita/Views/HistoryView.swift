@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct HistoryView: View {
-    @State private var preferences = PreferencesManager.shared
+    // MARK: Internal
 
     var body: some View {
         ZStack {
@@ -59,6 +59,10 @@ struct HistoryView: View {
         .navigationTitle("History")
         .navigationBarTitleDisplayMode(.inline)
     }
+
+    // MARK: Private
+
+    @State private var preferences = PreferencesManager.shared
 }
 
 #Preview {

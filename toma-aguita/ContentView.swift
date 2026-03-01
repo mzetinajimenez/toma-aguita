@@ -11,13 +11,7 @@ import UIKit
 import WidgetKit
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.scenePhase) private var scenePhase
-    @State private var manager: WaterIntakeManager?
-    @State private var showResetConfirmation = false
-    @State private var previousProgress: Double = 0
-    @State private var unitMode: UnitMode = .cups
-    @State private var preferences = PreferencesManager.shared
+    // MARK: Internal
 
     var body: some View {
         ZStack {
@@ -170,6 +164,16 @@ struct ContentView: View {
         }
     }
 
+    // MARK: Private
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var manager: WaterIntakeManager?
+    @State private var showResetConfirmation = false
+    @State private var previousProgress: Double = 0
+    @State private var unitMode: UnitMode = .cups
+    @State private var preferences = PreferencesManager.shared
+
     private func labelForAmount(_ cups: Double, includeSign: Bool = true) -> String {
         let sign = includeSign ? "+" : ""
         switch unitMode {
@@ -214,39 +218,17 @@ struct ContentView: View {
 // MARK: - Circular Progress View
 
 struct CircularProgressView: View {
+    // MARK: Internal
+
     @Binding var cupsConsumed: Double
+
     let dailyGoal: Double
     let unitMode: UnitMode
     let colorScheme: ColorSchemeOption
 
-    @State private var isDragging: Bool = false
-    @State private var dragProgress: Double = 0
-    @State private var lastSnappedCups: Double = 0
-    @State private var impactGenerator = UIImpactFeedbackGenerator(style: .light)
-
-    private func cupsToCurrentUnit(_ cups: Double) -> Double {
-        switch unitMode {
-        case .cups: return cups
-        case .oz: return cups * 8
-        case .mL: return cups * 236.588
-        }
-    }
-
-    private var dailyGoalInCups: Double {
-        switch unitMode {
-        case .cups: return dailyGoal
-        case .oz: return dailyGoal / 8
-        case .mL: return dailyGoal / 236.588
-        }
-    }
-
     var progress: Double {
         let consumedInUnit = cupsToCurrentUnit(cupsConsumed)
         return isDragging ? dragProgress : min(consumedInUnit / dailyGoal, 1.0)
-    }
-
-    private func roundToNearestHalf(_ value: Double) -> Double {
-        return round(value * 2) / 2
     }
 
     var displayValue: Double {
@@ -263,31 +245,6 @@ struct CircularProgressView: View {
         case .mL:
             return "mL"
         }
-    }
-
-    /// Convert drag location to angle (0-360 degrees)
-    private func angleFromLocation(_ location: CGPoint, in size: CGSize) -> Double {
-        let center = CGPoint(x: size.width / 2, y: size.height / 2)
-        let vector = CGPoint(x: location.x - center.x, y: location.y - center.y)
-        let angleRadians = atan2(vector.y, vector.x)
-        let angleDegrees = (angleRadians * 180 / .pi + 90).truncatingRemainder(dividingBy: 360)
-        return angleDegrees < 0 ? angleDegrees + 360 : angleDegrees
-    }
-
-    /// Get increment size for current unit mode
-    private func incrementInCups() -> Double {
-        switch unitMode {
-        case .cups: return 0.25
-        case .oz: return 0.125 // 1 oz = 1/8 cup
-        case .mL: return 10.0 / 236.588 // 10 mL in cups
-        }
-    }
-
-    /// Snap progress to nearest increment
-    private func snappedCups(fromProgress rawProgress: Double) -> Double {
-        let cupsFromProgress = rawProgress * dailyGoalInCups
-        let increment = incrementInCups()
-        return round(cupsFromProgress / increment) * increment
     }
 
     var body: some View {
@@ -398,12 +355,62 @@ struct CircularProgressView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    @State private var isDragging: Bool = false
+    @State private var dragProgress: Double = 0
+    @State private var lastSnappedCups: Double = 0
+    @State private var impactGenerator = UIImpactFeedbackGenerator(style: .light)
+
+    private var dailyGoalInCups: Double {
+        switch unitMode {
+        case .cups: return dailyGoal
+        case .oz: return dailyGoal / 8
+        case .mL: return dailyGoal / 236.588
+        }
+    }
+
+    private func cupsToCurrentUnit(_ cups: Double) -> Double {
+        switch unitMode {
+        case .cups: return cups
+        case .oz: return cups * 8
+        case .mL: return cups * 236.588
+        }
+    }
+
+    /// Convert drag location to angle (0-360 degrees)
+    private func angleFromLocation(_ location: CGPoint, in size: CGSize) -> Double {
+        let center = CGPoint(x: size.width / 2, y: size.height / 2)
+        let vector = CGPoint(x: location.x - center.x, y: location.y - center.y)
+        let angleRadians = atan2(vector.y, vector.x)
+        let angleDegrees = (angleRadians * 180 / .pi + 90).truncatingRemainder(dividingBy: 360)
+        return angleDegrees < 0 ? angleDegrees + 360 : angleDegrees
+    }
+
+    /// Get increment size for current unit mode
+    private func incrementInCups() -> Double {
+        switch unitMode {
+        case .cups: return 0.25
+        case .oz: return 0.125 // 1 oz = 1/8 cup
+        case .mL: return 10.0 / 236.588 // 10 mL in cups
+        }
+    }
+
+    /// Snap progress to nearest increment
+    private func snappedCups(fromProgress rawProgress: Double) -> Double {
+        let cupsFromProgress = rawProgress * dailyGoalInCups
+        let increment = incrementInCups()
+        return round(cupsFromProgress / increment) * increment
+    }
 }
 
 // MARK: - Add Water Button
 
 enum DropIconType {
-    case half, one, two
+    case half
+    case one
+    case two
 }
 
 struct AddWaterButton: View {

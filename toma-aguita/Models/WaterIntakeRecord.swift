@@ -8,13 +8,17 @@ import SwiftData
 
 @Model
 final class WaterIntakeRecord {
-    var date: Date
-    var cupsConsumed: Double
+    // MARK: Lifecycle
 
     init(date: Date = Date(), cupsConsumed: Double = 0) {
         self.date = date
         self.cupsConsumed = cupsConsumed
     }
+
+    // MARK: Internal
+
+    var date: Date
+    var cupsConsumed: Double
 
     /// Returns true if this record is for today
     var isToday: Bool {
