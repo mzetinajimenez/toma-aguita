@@ -11,6 +11,8 @@ enum ColorSchemeOption: String, CaseIterable, Codable {
     case green = "Green & Teal"
     case orange = "Orange & Red"
 
+    // MARK: Internal
+
     var primaryColor: Color {
         switch self {
         case .cyan: return .cyan

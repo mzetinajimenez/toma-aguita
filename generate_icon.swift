@@ -6,11 +6,6 @@ import SwiftUI
 // MARK: - Icon Configuration
 
 struct IconConfig {
-    let topColor: Color
-    let bottomColor: Color
-    let dropletColor: Color
-    let filename: String
-
     static let light = IconConfig(
         topColor: Color(red: 0.0, green: 0.4, blue: 0.7),
         bottomColor: Color(red: 0.0, green: 0.6, blue: 0.85),
@@ -31,6 +26,11 @@ struct IconConfig {
         dropletColor: Color.white.opacity(0.9),
         filename: "AppIcon-tinted.png"
     )
+
+    let topColor: Color
+    let bottomColor: Color
+    let dropletColor: Color
+    let filename: String
 }
 
 // MARK: - Icon View
@@ -63,7 +63,7 @@ struct IconView: View {
 
 // MARK: - Icon Generator
 
-class IconGenerator {
+enum IconGenerator {
     @MainActor
     static func generateIcon(config: IconConfig, outputPath: String) {
         let iconView = IconView(config: config)

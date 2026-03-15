@@ -6,8 +6,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State private var selectedTab = 0
-    @State private var preferences = PreferencesManager.shared
+    // MARK: Internal
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -45,6 +44,11 @@ struct MainTabView: View {
         }
         .tint(preferences.colorScheme.primaryColor)
     }
+
+    // MARK: Private
+
+    @State private var selectedTab = 0
+    @State private var preferences = PreferencesManager.shared
 }
 
 #Preview {

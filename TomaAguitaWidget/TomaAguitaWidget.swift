@@ -10,12 +10,24 @@ import SwiftUI
 import WidgetKit
 
 struct Provider: TimelineProvider {
+    // MARK: Internal
+
     func placeholder(in _: Context) -> WaterIntakeEntry {
-        WaterIntakeEntry(date: Date(), cupsConsumed: 0, dailyGoal: PreferencesManager.shared.dailyGoal, unitMode: PreferencesManager.shared.defaultUnitMode)
+        WaterIntakeEntry(
+            date: Date(),
+            cupsConsumed: 0,
+            dailyGoal: PreferencesManager.shared.dailyGoal,
+            unitMode: PreferencesManager.shared.defaultUnitMode
+        )
     }
 
     func getSnapshot(in _: Context, completion: @escaping (WaterIntakeEntry) -> Void) {
-        let entry = WaterIntakeEntry(date: Date(), cupsConsumed: 3, dailyGoal: PreferencesManager.shared.dailyGoal, unitMode: PreferencesManager.shared.defaultUnitMode)
+        let entry = WaterIntakeEntry(
+            date: Date(),
+            cupsConsumed: 3,
+            dailyGoal: PreferencesManager.shared.dailyGoal,
+            unitMode: PreferencesManager.shared.defaultUnitMode
+        )
         completion(entry)
     }
 
@@ -35,6 +47,8 @@ struct Provider: TimelineProvider {
         let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
         completion(timeline)
     }
+
+    // MARK: Private
 
     private func fetchTodayWaterIntake() -> Double {
         do {

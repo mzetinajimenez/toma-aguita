@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct SocialView: View {
-    @State private var preferences = PreferencesManager.shared
+    // MARK: Internal
 
     var body: some View {
         ZStack {
@@ -60,6 +60,10 @@ struct SocialView: View {
         .navigationTitle("Friends")
         .navigationBarTitleDisplayMode(.inline)
     }
+
+    // MARK: Private
+
+    @State private var preferences = PreferencesManager.shared
 }
 
 #Preview {

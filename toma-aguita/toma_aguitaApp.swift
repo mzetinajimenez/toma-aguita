@@ -10,7 +10,7 @@ import SwiftUI
 
 @main
 struct toma_aguitaApp: App {
-    let modelContainer: ModelContainer
+    // MARK: Lifecycle
 
     init() {
         do {
@@ -33,6 +33,10 @@ struct toma_aguitaApp: App {
             fatalError("Failed to initialize ModelContainer: \(error)")
         }
     }
+
+    // MARK: Internal
+
+    let modelContainer: ModelContainer
 
     var body: some Scene {
         WindowGroup {

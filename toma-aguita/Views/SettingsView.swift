@@ -7,23 +7,7 @@ import SwiftUI
 import UIKit
 
 struct SettingsView: View {
-    @State private var preferences = PreferencesManager.shared
-
-    private var stepperStep: Double {
-        switch preferences.defaultUnitMode {
-        case .cups: return 1
-        case .oz: return 8
-        case .mL: return 50
-        }
-    }
-
-    private var stepperRange: ClosedRange<Double> {
-        switch preferences.defaultUnitMode {
-        case .cups: return 4 ... 16
-        case .oz: return 32 ... 128
-        case .mL: return 950 ... 3800
-        }
-    }
+    // MARK: Internal
 
     var body: some View {
         ZStack {
@@ -73,15 +57,17 @@ struct SettingsView: View {
 
                                 Stepper(value: $preferences.dailyGoal, in: stepperRange, step: stepperStep) {
                                     HStack {
-                                        Text("\(Int(preferences.dailyGoal.rounded())) \(preferences.defaultUnitMode.displayName)")
-                                            .font(.system(size: 24, weight: .bold, design: .rounded))
-                                            .foregroundStyle(
-                                                LinearGradient(
-                                                    colors: preferences.colorScheme.gradientColors,
-                                                    startPoint: .leading,
-                                                    endPoint: .trailing
-                                                )
+                                        Text(
+                                            "\(Int(preferences.dailyGoal.rounded())) \(preferences.defaultUnitMode.displayName)"
+                                        )
+                                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                                        .foregroundStyle(
+                                            LinearGradient(
+                                                colors: preferences.colorScheme.gradientColors,
+                                                startPoint: .leading,
+                                                endPoint: .trailing
                                             )
+                                        )
                                         Spacer()
                                     }
                                 }
@@ -142,6 +128,26 @@ struct SettingsView: View {
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    // MARK: Private
+
+    @State private var preferences = PreferencesManager.shared
+
+    private var stepperStep: Double {
+        switch preferences.defaultUnitMode {
+        case .cups: return 1
+        case .oz: return 8
+        case .mL: return 50
+        }
+    }
+
+    private var stepperRange: ClosedRange<Double> {
+        switch preferences.defaultUnitMode {
+        case .cups: return 4 ... 16
+        case .oz: return 32 ... 128
+        case .mL: return 950 ... 3800
+        }
     }
 }
 

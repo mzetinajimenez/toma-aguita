@@ -8,16 +8,38 @@ import SwiftUI
 import WidgetKit
 
 @Observable
-class PreferencesManager {
-    static let shared = PreferencesManager()
+final class PreferencesManager {
+    // MARK: Lifecycle
 
-    private let userDefaults: UserDefaults
+    private init() {
+        guard let sharedDefaults = UserDefaults(suiteName: "group.com.mzj.toma-aguita") else {
+            fatalError("Failed to initialize UserDefaults with App Group")
+        }
+        userDefaults = sharedDefaults
 
-    private enum Keys {
-        static let dailyGoal = "dailyGoal"
-        static let defaultUnitMode = "defaultUnitMode"
-        static let colorScheme = "colorScheme"
+        let storedGoal = sharedDefaults.double(forKey: Keys.dailyGoal)
+        dailyGoal = storedGoal != 0 ? storedGoal : 8.0
+
+        if let rawUnit = sharedDefaults.string(forKey: Keys.defaultUnitMode),
+           let mode = UnitMode(rawValue: rawUnit)
+        {
+            defaultUnitMode = mode
+        } else {
+            defaultUnitMode = .cups
+        }
+
+        if let rawScheme = sharedDefaults.string(forKey: Keys.colorScheme),
+           let scheme = ColorSchemeOption(rawValue: rawScheme)
+        {
+            colorScheme = scheme
+        } else {
+            colorScheme = .cyan
+        }
     }
+
+    // MARK: Internal
+
+    static let shared = PreferencesManager()
 
     /// Stored properties so @Observable can track changes
     var dailyGoal: Double {
@@ -45,6 +67,22 @@ class PreferencesManager {
         }
     }
 
+    var colorScheme: ColorSchemeOption {
+        didSet {
+            userDefaults.set(colorScheme.rawValue, forKey: Keys.colorScheme)
+        }
+    }
+
+    // MARK: Private
+
+    private enum Keys {
+        static let dailyGoal = "dailyGoal"
+        static let defaultUnitMode = "defaultUnitMode"
+        static let colorScheme = "colorScheme"
+    }
+
+    private let userDefaults: UserDefaults
+
     private func convert(_ value: Double, from: UnitMode, to: UnitMode) -> Double {
         let inCups: Double
         switch from {
@@ -64,38 +102,6 @@ class PreferencesManager {
         case .cups: return 1
         case .oz: return 8
         case .mL: return 50
-        }
-    }
-
-    var colorScheme: ColorSchemeOption {
-        didSet {
-            userDefaults.set(colorScheme.rawValue, forKey: Keys.colorScheme)
-        }
-    }
-
-    private init() {
-        guard let sharedDefaults = UserDefaults(suiteName: "group.com.mzj.toma-aguita") else {
-            fatalError("Failed to initialize UserDefaults with App Group")
-        }
-        userDefaults = sharedDefaults
-
-        let storedGoal = sharedDefaults.double(forKey: Keys.dailyGoal)
-        dailyGoal = storedGoal != 0 ? storedGoal : 8.0
-
-        if let rawUnit = sharedDefaults.string(forKey: Keys.defaultUnitMode),
-           let mode = UnitMode(rawValue: rawUnit)
-        {
-            defaultUnitMode = mode
-        } else {
-            defaultUnitMode = .cups
-        }
-
-        if let rawScheme = sharedDefaults.string(forKey: Keys.colorScheme),
-           let scheme = ColorSchemeOption(rawValue: rawScheme)
-        {
-            colorScheme = scheme
-        } else {
-            colorScheme = .cyan
         }
     }
 }

@@ -9,6 +9,8 @@ enum UnitMode: String, Codable, CaseIterable {
     case oz
     case mL
 
+    // MARK: Internal
+
     var displayName: String {
         switch self {
         case .cups: return "Cups"
